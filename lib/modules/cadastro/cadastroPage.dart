@@ -1,19 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'package:sprint3_app/modules/listaItems/items_page.dart';
+import 'package:sprint3_app/modules/cadastro/cadastroController.dart';
 
-import '../ApiPage/ApiPage.dart';
-import 'indexController.dart';
-
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+class cadastroPage extends StatefulWidget {
+  const cadastroPage({super.key});
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<cadastroPage> createState() => _cadastroPageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _cadastroPageState extends State<cadastroPage> {
   final user = TextEditingController();
 
   final password = TextEditingController();
@@ -55,7 +52,7 @@ class _HomePageState extends State<HomePage> {
                       const SizedBox(height: 30),
                       SizedBox(
                         width: 200,
-                        child: Consumer<IndexController>(
+                        child: Consumer<CadastroController>(
                           builder: (context, value, __) {
                             return ElevatedButton(
                               style:
@@ -65,8 +62,8 @@ class _HomePageState extends State<HomePage> {
                                 String senha = password.text;
                                 if (nome == value.nome &&
                                     senha == value.senha) {
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                      builder: (context) => ItemsPage()));
+                                  // Navigator.of(context).push(MaterialPageRoute(
+                                  //     builder: (context) => ApiPage()));
                                 } else {
                                   showDialog(
                                     context: context,
@@ -97,17 +94,6 @@ class _HomePageState extends State<HomePage> {
                               ),
                             );
                           },
-                        ),
-                      ),
-                      const SizedBox(height: 30),
-                      SizedBox(
-                        width: 200,
-                        child: ElevatedButton(
-                          onPressed: () => {
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => ApiPage()))
-                          },
-                          child: const Text('Previsão do tempo em SP'),
                         ),
                       ),
                     ],
