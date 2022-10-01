@@ -36,7 +36,7 @@ class ItemsPageState extends State<ItemsPage> {
       ),
     );
 
-    refreshItems();
+    await refreshItems();
     //limpa campos
     indicadorEditingController.text = '';
     tipoEditingController.text = '';
@@ -45,7 +45,11 @@ class ItemsPageState extends State<ItemsPage> {
   }
 
   Future refreshItems() async {
-    this.items = await ItemsDatabase.instance.readAllItems();
+    var itemsNovos = await ItemsDatabase.instance.readAllItems();
+
+    setState(() {
+      items = itemsNovos;
+    });
   }
 
   @override
@@ -55,13 +59,19 @@ class ItemsPageState extends State<ItemsPage> {
         padding: EdgeInsets.all(20),
         child: SingleChildScrollView(
             child: Column(children: [
+          const SizedBox(height: 45),
+          Text(
+            'Adicione um novo indicador',
+            style: TextStyle(fontSize: 30),
+          ),
+          const SizedBox(height: 25),
           customInput(
             label: "indicador",
             inputController: indicadorEditingController,
           ),
           const SizedBox(height: 25),
           customInput(
-            label: "tipo",
+            label: "tipo (positivo ou negativo)",
             inputController: tipoEditingController,
           ),
           const SizedBox(height: 25),
@@ -71,12 +81,18 @@ class ItemsPageState extends State<ItemsPage> {
           ),
           const SizedBox(height: 25),
           customInput(
-            label: "area",
+            label: "area (agronegocio, construição, etc)",
             inputController: areaEditingController,
+          ),
+          const SizedBox(height: 35),
+          Text(
+            'Indicadores de negocios scania',
+            style: TextStyle(fontSize: 20),
           ),
           const SizedBox(height: 40),
           ListView.separated(
             shrinkWrap: true,
+            physics: const AlwaysScrollableScrollPhysics(), // new
             itemCount: items.length,
             separatorBuilder: (BuildContext context, int index) =>
                 const SizedBox(

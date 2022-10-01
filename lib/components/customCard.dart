@@ -15,38 +15,40 @@ class customCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(5),
           border:
               Border.all(color: Color.fromARGB(255, 169, 77, 212), width: 2)),
-      height: 40,
+      height: 90,
       padding: const EdgeInsets.symmetric(horizontal: 5),
       child: Row(
         children: [
-          Expanded(
-            flex: 1,
-            child: Text(
-              indicador!,
-              style: TextStyle(color: Color.fromARGB(255, 169, 77, 212)),
-            ),
-          ),
-          Expanded(
-            flex: 1,
-            child: Text(
-              tipo!,
-              style: TextStyle(color: Color.fromARGB(255, 169, 77, 212)),
-            ),
-          ),
-          Expanded(
-            flex: 1,
-            child: Text(
-              produto!,
-              style: TextStyle(color: Color.fromARGB(255, 169, 77, 212)),
-            ),
-          ),
-          Expanded(
-            flex: 1,
-            child: Text(
-              area!,
-              style: TextStyle(color: Color.fromARGB(255, 169, 77, 212)),
-            ),
-          ),
+          Column(
+            children: [
+              Row(
+                children: [
+                  Text(
+                    indicador!,
+                    style: TextStyle(fontSize: 20),
+                  ),
+                  // const Spacer(),
+                  Text(
+                    tipo!,
+                    style: TextStyle(fontSize: 20),
+                  )
+                ],
+              ),
+              Row(
+                children: [
+                  Text(
+                    produto!,
+                    style: TextStyle(fontSize: 20),
+                  ),
+                  // const Spacer(),
+                  Text(
+                    area!,
+                    style: TextStyle(fontSize: 20),
+                  )
+                ],
+              ),
+            ],
+          )
         ],
       ),
     );
