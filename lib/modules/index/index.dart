@@ -38,7 +38,7 @@ class _HomePageState extends State<HomePage> {
             children: [
               Container(
                 padding: const EdgeInsets.all(40),
-                width: 400,
+                width: 300,
                 height: 600,
                 child: Form(
                   child: Column(
