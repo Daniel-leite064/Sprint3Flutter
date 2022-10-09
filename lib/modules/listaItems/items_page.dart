@@ -17,6 +17,9 @@ class ItemsPageState extends State<ItemsPage> {
   TextEditingController produtoEditingController = TextEditingController();
   TextEditingController areaEditingController = TextEditingController();
 
+  bool isEditing = false;
+  int? editingId;
+
   late List<Item> items;
 
   @override
@@ -38,10 +41,7 @@ class ItemsPageState extends State<ItemsPage> {
 
     await refreshItems();
     //limpa campos
-    indicadorEditingController.text = '';
-    tipoEditingController.text = '';
-    produtoEditingController.text = '';
-    areaEditingController.text = '';
+    clearInputs();
   }
 
   Future refreshItems() async {
@@ -50,6 +50,48 @@ class ItemsPageState extends State<ItemsPage> {
     setState(() {
       items = itemsNovos;
     });
+  }
+
+  Future deleteItem(id) async {
+    await ItemsDatabase.instance.delete(id);
+    await refreshItems();
+  }
+
+  Future updateItem(id) async {
+    Item item = Item(
+      id: id,
+      indicador: indicadorEditingController.text,
+      tipo: tipoEditingController.text,
+      produto: produtoEditingController.text,
+      area: areaEditingController.text,
+    );
+    ItemsDatabase.instance.update(item);
+    refreshItems();
+    clearInputs();
+
+    setState(() {
+      isEditing = false;
+      editingId = null;
+    });
+  }
+
+  setInputs(id, indicador, tipo, produto, area) {
+    indicadorEditingController.text = indicador;
+    tipoEditingController.text = tipo;
+    produtoEditingController.text = produto;
+    areaEditingController.text = area;
+
+    setState(() {
+      isEditing = true;
+      editingId = id;
+    });
+  }
+
+  clearInputs() {
+    indicadorEditingController.text = '';
+    tipoEditingController.text = '';
+    produtoEditingController.text = '';
+    areaEditingController.text = '';
   }
 
   @override
@@ -105,6 +147,14 @@ class ItemsPageState extends State<ItemsPage> {
                 tipo: indicador.tipo,
                 produto: indicador.produto,
                 area: indicador.area,
+                deleteItem: () => deleteItem(indicador.id),
+                updateItem: () => setInputs(
+                  indicador.id,
+                  indicador.indicador,
+                  indicador.tipo,
+                  indicador.produto,
+                  indicador.area,
+                ),
               );
             },
           )
@@ -112,9 +162,13 @@ class ItemsPageState extends State<ItemsPage> {
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Color.fromARGB(255, 169, 77, 212),
-        tooltip: 'Adicionar',
-        onPressed: addNewItem,
-        child: const Icon(Icons.add),
+        tooltip: !isEditing ? 'Adicionar' : 'Atualizar',
+        onPressed: !isEditing
+            ? addNewItem
+            : (() {
+                updateItem(editingId);
+              }),
+        child: !isEditing ? Icon(Icons.add) : Icon(Icons.edit),
       ),
     );
   }

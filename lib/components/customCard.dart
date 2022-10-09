@@ -5,8 +5,18 @@ class customCard extends StatelessWidget {
   final String? tipo;
   final String? produto;
   final String? area;
+  final Function? deleteItem;
+  final int? id;
+  final Function? updateItem;
 
-  customCard({this.indicador, this.tipo, this.produto, this.area});
+  customCard(
+      {this.indicador,
+      this.tipo,
+      this.produto,
+      this.area,
+      this.deleteItem,
+      this.id,
+      this.updateItem});
 
   @override
   Widget build(BuildContext context) {
@@ -21,32 +31,48 @@ class customCard extends StatelessWidget {
         children: [
           Column(
             children: [
+              Text(
+                produto!,
+                style: TextStyle(fontSize: 20),
+              ),
+              // const Spacer(),
+              Text(
+                area!,
+                style: TextStyle(fontSize: 20),
+              )
+            ],
+          ),
+          const Spacer(),
+          Column(children: [
+            Text(
+              indicador!,
+              style: TextStyle(fontSize: 20),
+            ),
+            // const Spacer(),
+            Text(
+              tipo!,
+              style: TextStyle(fontSize: 20),
+            )
+          ]),
+          const Spacer(),
+          Column(
+            children: [
               Row(
                 children: [
-                  Text(
-                    indicador!,
-                    style: TextStyle(fontSize: 20),
+                  IconButton(
+                    onPressed: () {
+                      updateItem!();
+                    },
+                    icon: Icon(Icons.edit),
                   ),
-                  // const Spacer(),
-                  Text(
-                    tipo!,
-                    style: TextStyle(fontSize: 20),
+                  IconButton(
+                    onPressed: () {
+                      deleteItem!();
+                    },
+                    icon: Icon(Icons.delete),
                   )
                 ],
-              ),
-              Row(
-                children: [
-                  Text(
-                    produto!,
-                    style: TextStyle(fontSize: 20),
-                  ),
-                  // const Spacer(),
-                  Text(
-                    area!,
-                    style: TextStyle(fontSize: 20),
-                  )
-                ],
-              ),
+              )
             ],
           )
         ],

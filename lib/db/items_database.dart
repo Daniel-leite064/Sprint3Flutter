@@ -54,6 +54,27 @@ class ItemsDatabase {
     return result.map((json) => Item.fromJson(json)).toList();
   }
 
+  Future<int> update(Item item) async {
+    final db = await instance.database;
+
+    return db.update(
+      tableItems,
+      item.toJson(),
+      where: '${ItemsFields.id} = ?',
+      whereArgs: [item.id],
+    );
+  }
+
+  Future<int> delete(int id) async {
+    final db = await instance.database;
+
+    return await db.delete(
+      tableItems,
+      where: '${ItemsFields.id} = ?',
+      whereArgs: [id],
+    );
+  }
+
   Future close() async {
     final db = await instance.database;
 
